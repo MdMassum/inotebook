@@ -1,15 +1,15 @@
 const express = require('express');
 const User = require('../models/User');
 const router = express.Router()
-const bcrypt = require('bcrypt'); // For password hashing
-const jwt = require('jsonwebtoken')
-
+const bcrypt = require('bcrypt');    // For password hashing
+const jwt = require('jsonwebtoken')  // for authentication 
 const JWT_SECRET = 'this_is_$massum_secret_key';
 
+// adding validator i.e it puts condition what is allowed to enter and what not by user
+const { body,validationResult } = require('express-validator'); 
+const fetchUser = require('../middleware/fetchUsers'); 
 
-const { body,validationResult } = require('express-validator'); // adding validator i.e it puts condition what is allowed to enter and what not by user
-
-// create a user using post "api/auth/createuser". No login required
+//ROUTE 1 : create a user using post "api/auth/createuser". No login required
 router.post('/createuser',          // path
 [                         // validators
     body('password','Password must be at least 5 characters long').isLength({ min: 5 }),
@@ -60,7 +60,7 @@ async (req,res)=>{
     }    
 })
 
-// Authenticate a user using POST "/api/auth/login". No login required
+//ROUTE 2 : Authenticate a user using POST "/api/auth/login". No login required
 router.post('/login',
 [
 body('email','Enter valid email').isEmail(),   // validators
@@ -97,5 +97,18 @@ async (req,res)=>{
         res.status(500).send("Internal Server Error")
     }
 
+})
+
+//ROUTE 3 : Get Logged In user Details using POST "/api/auth/getuser". Login required
+
+router.post('/getuser',fetchUser,async (req,res)=>{  // here fetchUser is middleware fn after its execution only next async call back fn will get called
+    try {
+        userId = req.user.id;  // this req.user.id is from fetchUser();
+        const user = await User.findById(userId).select('-password');
+        res.send(user);
+    }catch (error) {
+        console.error(error.message);
+        res.status(500).send("Internal Server Error")
+    }
 })
 module.exports = router;
