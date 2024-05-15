@@ -4,6 +4,7 @@
   "description": "iNotebook - Your Notebook in the cloud",
   "main": "index.js",
   "scripts": {
+    "server": "nodemon server.js",
     "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
