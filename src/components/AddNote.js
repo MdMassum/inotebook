@@ -6,13 +6,13 @@ import noteContext from '../context/notes/noteContext'
 function AddNote() {
   const context = useContext(noteContext);
   const{addNote} = context;
-  const[note,setnote] = useState({title:"",description:"",tag:"General"})
+  const[note,setNotes] = useState({title:"",description:"",tag:""})
   const handleSubmit = (e) =>{
     e.preventDefault();
     addNote(note.title,note.description,note.tag);
   }
   const onChange = (e) =>{
-    setnote({...note,[e.target.name]:[e.target.value]});
+    setNotes({...note,[e.target.name]:[e.target.value]});
   }
   return (
     <div className="container">
@@ -31,7 +31,7 @@ function AddNote() {
               <label htmlFor="tag">Tag</label>
               <input type="text" name="tag" className="form-control" id="tag" placeholder="Enter tag" onChange={onChange}/>
             </div>
-            <button type="submit" className="btn btn-dark" onClick={handleSubmit}>Submit</button>
+            <button type="submit" className="btn btn-dark" onClick={handleSubmit}>Add Note</button>
          </form>
     </div>
   )
