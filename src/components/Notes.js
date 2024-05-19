@@ -60,16 +60,16 @@ function Notes(props) {
               </div>
               <div className="modal-body">
                 {/* modal body form */}
-                    <div className="form-group m-4">
+                    <div className="form-group my-4">
                       <label htmlFor="title">Title</label>
                       <input type="text" name="etitle" className="form-control" id="title" aria-describedby="emailHelp" placeholder="Enter Title" onChange={onChange} value={note.etitle} />
                       
                     </div>
-                    <div className="form-group m-4">
+                    <div className="form-group my-4">
                       <label htmlFor="description">Description</label>
                       <input type="text" name="edescription" className="form-control" id="edescription" placeholder="Enter Description" onChange={onChange} value={note.edescription}/>
                     </div>
-                    <div className="form-group m-4">
+                    <div className="form-group my-4">
                       <label htmlFor="tag">Tag</label>
                       <input type="text" name="etag" className="form-control" id="etag" placeholder="Enter tag" onChange={onChange} value={note.etag} />
                     </div>

@@ -9,23 +9,27 @@ function Navbar() {
     localStorage.removeItem('token');
     navigate('/login')
   }
+
   return (
     <>
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div className="container-fluid">
+    <div className="container-fluid">
     <div>
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>
-      <NavLink className="navbar-brand mx-2"  to="#">iNotebook</NavLink>
     </button>
     </div>
+    <div className="d-block"><NavLink className="navbar-brand mx-2"  to="#">iNotebook</NavLink></div>
     <div className="collapse navbar-collapse" id="navbarNav">
       <ul className="navbar-nav">
         <li className="nav-item">
           <NavLink className="nav-link "aria-current="page" to="/">Home</NavLink>
         </li>
         <li className="nav-item">
-          <NavLink className="nav-link" to="/about">About</NavLink>
+          <NavLink className="nav-link" to={(!localStorage.getItem('token'))?"/login":"/about"}>About</NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink className="nav-link" to={(!localStorage.getItem('token'))?"/login":"/contact"}>ContactUs</NavLink>
         </li>
       </ul>
     </div>

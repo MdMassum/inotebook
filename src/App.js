@@ -7,6 +7,7 @@ import Alert from "./components/Alert";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
 import { useState } from "react";
+import ContactUs from "./components/ContactUs";
 
 function App() {
   const [alert,setAlert] = useState(null);
@@ -26,6 +27,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home showAlert={showAlert}/>}></Route>
           <Route path="/about" element={<About/>}></Route>
+          <Route path="/contact" element={<ContactUs/>}></Route>
           <Route path="/login" element={<Login showAlert={showAlert}/>}></Route>
           <Route path="/signup" element={<Signup showAlert={showAlert}/>}></Route>
         </Routes>
