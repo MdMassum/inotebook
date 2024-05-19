@@ -40,16 +40,7 @@ const NoteState = (props) =>{
           },
           body:JSON.stringify({title:titl,description:descript,tag:ta})
       });
-      const data = await resp.json();
-        const note = {
-          "_id":data._id,
-          "user": "66432e4d509df36a4cc53919",
-          "title": title,
-          "description": description,
-          "tag": tag,
-          "date": "2024-05-14T11:37:06.085Z",
-          "__v": 0
-        }
+      const note = await resp.json();
         setNotes(notes.concat(note));
     } catch (error) {
       console.error("Error adding note:", error);
@@ -79,9 +70,11 @@ const NoteState = (props) =>{
   // Edit a Note -->
   const editNote=async(id,title,description,tag)=>{
     // since the parameters are giving us array we converting it into string for passing in body
-    var titl = title[0];
-    var descript = description[0];
-    var ta = tag[0];
+    var titl = String(title);
+    var descript = String(description);
+    var ta = String(tag);
+    console.log(titl,descript,ta);
+    console.log(id,title,description,tag);
     try {
       await fetch(`${host}/api/notes/updatenote/${id}`, {
         method: "PUT",

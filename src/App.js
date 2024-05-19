@@ -4,6 +4,8 @@ import Navbar from "./components/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NoteState from "./context/notes/notestate";
 import Alert from "./components/Alert";
+import Signup from "./components/Signup";
+import Login from "./components/Login";
 
 function App() {
   const alert = {
@@ -20,6 +22,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/about" element={<About/>}></Route>
+          <Route path="/login" element={<Login/>}></Route>
+          <Route path="/signup" element={<Signup/>}></Route>
         </Routes>
         </div>
       </BrowserRouter>
