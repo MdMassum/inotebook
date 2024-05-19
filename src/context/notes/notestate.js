@@ -3,8 +3,11 @@ import NoteContext from "./noteContext";
 
 const NoteState = (props) =>{
 
+  const {showAlert} = props;
+
   const host = "http://localhost:5000";
   const[notes,setNotes] = useState([]);
+
 
   // fetching all notes -->
       const fetchNotes = async()=>{
@@ -14,7 +17,7 @@ const NoteState = (props) =>{
       
             headers: {
               "Content-Type": "application/json",
-              "auth-token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjY0MzJlNGQ1MDlkZjM2YTRjYzUzOTE5In0sImlhdCI6MTcxNTY4MjYyOX0.RcqmIlUqzDGuXJhPxYwhZzP7F5pooaMFUK32SYaV3Q4"
+              "auth-token":localStorage.getItem('token')
               
             }
         });
@@ -36,13 +39,15 @@ const NoteState = (props) =>{
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "auth-token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjY0MzJlNGQ1MDlkZjM2YTRjYzUzOTE5In0sImlhdCI6MTcxNTY4MjYyOX0.RcqmIlUqzDGuXJhPxYwhZzP7F5pooaMFUK32SYaV3Q4"
+            "auth-token":localStorage.getItem('token')
           },
           body:JSON.stringify({title:titl,description:descript,tag:ta})
       });
       const note = await resp.json();
-        setNotes(notes.concat(note));
+      showAlert("success","Note Added Successfully");
+      setNotes(notes.concat(note));
     } catch (error) {
+      showAlert("error","Some Error Occured");
       console.error("Error adding note:", error);
     }
   }
@@ -55,14 +60,15 @@ const NoteState = (props) =>{
             method: "DELETE",
             headers: {
               "Content-Type": "application/json",
-              "auth-token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjY0MzJlNGQ1MDlkZjM2YTRjYzUzOTE5In0sImlhdCI6MTcxNTY4MjYyOX0.RcqmIlUqzDGuXJhPxYwhZzP7F5pooaMFUK32SYaV3Q4"
+              "auth-token":localStorage.getItem('token')
             },
         });
-
+        showAlert("success","Note Deleted Successfully");
         const newNotes = (notes.filter((note)=>{return note._id !== id}));
         setNotes(newNotes); 
 
     } catch (error) {
+      showAlert("error","Some Error Occured");
       console.error("Error deleting note:", error);
     }
   }
@@ -80,16 +86,18 @@ const NoteState = (props) =>{
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "auth-token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjY0MzJlNGQ1MDlkZjM2YTRjYzUzOTE5In0sImlhdCI6MTcxNTY4MjYyOX0.RcqmIlUqzDGuXJhPxYwhZzP7F5pooaMFUK32SYaV3Q4"
+          "auth-token":localStorage.getItem('token')
         },
         body: JSON.stringify({title:titl,description:descript,tag:ta})
       });
       // updating in frontend -->
+      showAlert("success","Note Edited Successfully");
       const newNotes = notes.map((note) =>
         note._id === id ? { ...note, title, description, tag } : note
       );
       setNotes(newNotes);
     } catch (error) {
+      showAlert("error","Some Error Occured");
       console.error("Error editing note:", error);
     } 
   }

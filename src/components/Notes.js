@@ -4,14 +4,23 @@ import noteContext from '../context/notes/noteContext'
 import NoteItem from './NoteItem';
 import AddNote from './AddNote';
 import { useRef } from 'react';  // used for reference to modal popup for update button
+import { useNavigate } from "react-router-dom";
 
-function Notes() {
+function Notes(props) {
   const context = useContext(noteContext);
   const{notes,fetchNotes,editNote} = context;
   const[note,setNotes] = useState({id:"",etitle:"",edescription:"",etag:""})
- 
+
+  const{showAlert} = props;
+  let navigate = useNavigate();
   useEffect(() => {
-    fetchNotes();
+    if(localStorage.getItem('token')){
+      fetchNotes();
+    }
+    else{
+      showAlert("warning","Please Login First !!!")
+      navigate('/login');
+    }
     // eslint-disable-next-line
   }, [])
   

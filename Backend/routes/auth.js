@@ -17,16 +17,16 @@ router.post('/createuser',          // path
     body('email','Enter valid email').isEmail(),
 ],
 async (req,res)=>{
-
+    let success = false;
     const errors = validationResult(req);
 
     if(!errors.isEmpty()){   //  error found then  return bad request and errors
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({ success,errors: errors.array() });
     }
     try {
 
         if(await User.findOne({email:req.body.email})){         // email already exists -->
-            return res.status(400).json({ error: "Sorry!! User with this email already exists" });
+            return res.status(400).json({ success,error: "Sorry!! User with this email already exists" });
         }
 
         // if no error found in validation then create user and store in database
@@ -46,9 +46,9 @@ async (req,res)=>{
                 id: newUser.id // Assuming your User model has an 'id' field
             }
         };
-
+        success = true;
         const token = jwt.sign(payload, JWT_SECRET);
-        res.json({ token }); // Return the JWT to the client upon successful user creation
+        res.json({success, token }); // Return the JWT to the client upon successful user creation
 
         // another method to store in db
         // const user = User(req.body)
@@ -68,20 +68,21 @@ body('password','Password cannot by empty').exists(),
 ],
 async (req,res)=>{
     const errors = validationResult(req);
+    let success = false;
 
     if(!errors.isEmpty()){   //  error found then  return bad request and errors
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({ success,errors: errors.array() });
     }
     const{email,password} = req.body;
 
     try {
         let user = await User.findOne({email});
         if(!user){
-            return res.status(400).json({error:"Please Enter Correct Email Or Password !!!"});
+            return res.status(400).json({success,error:"Please Enter Correct Email Or Password !!!"});
         }
         const passwordComp = await bcrypt.compare(password,user.password);
         if(!passwordComp){
-            return res.status(400).json({error:"Please Enter Correct Email Or Password !!!"});
+            return res.status(400).json({success,error:"Please Enter Correct Email Or Password !!!"});
         }
 
         const payload = {
@@ -90,7 +91,8 @@ async (req,res)=>{
             }
         };
         const token = jwt.sign(payload, JWT_SECRET);
-        res.json({ token }); // Return the JWT to the client upon successful user creation
+        success = true;
+        res.json({success,token }); // Return the JWT to the client upon successful user creation
 
     } catch (error) {
         console.error(error.message);
@@ -102,10 +104,12 @@ async (req,res)=>{
 //ROUTE 3 : Get Logged In user Details using POST "/api/auth/getuser". Login required
 
 router.post('/getuser',fetchUser,async (req,res)=>{  // here fetchUser is middleware fn after its execution only next async call back fn will get called
+    let success = false;
     try {
         userId = req.user.id;  // this req.user.id is from fetchUser();
         const user = await User.findById(userId).select('-password');
-        res.send(user);
+        success = true;
+        res.send({success,user});
     }catch (error) {
         console.error(error.message);
         res.status(500).send("Internal Server Error")
