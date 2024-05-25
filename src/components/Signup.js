@@ -20,7 +20,9 @@ function Signup(props) {
       props.showAlert("warning","Password Mismatch");
       return;
     }
-    const resp = await fetch('http://localhost:5000/api/auth/createuser',{
+    // https://massum-inotebook.netlify.app
+    // http://localhost:5000/api/auth/createuser
+    const resp = await fetch('https://massum-inotebook.netlify.app/api/auth/createuser',{
       method:"POST",
       headers:{"Content-Type": "application/json"},
       body: JSON.stringify({name:nm,email:eml,password:pwrd})
