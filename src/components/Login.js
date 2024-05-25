@@ -13,7 +13,7 @@ function Login(props) {
         const pwrd = credentials.password[0]
         // "https://massum-inotebook.netlify.app"
         // 'http://localhost:5000/api/auth/login'
-        const resp = await fetch('https://massum-inotebook.netlify.app/api/auth/login',{
+        const resp = await fetch('https://massum-inotebook.netlify.app/login',{
             method:"POST",
             headers:{"Content-Type": "application/json"},
             body: JSON.stringify({email:eml,password:pwrd})
